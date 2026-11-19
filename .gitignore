@@ -1,0 +1,38 @@
+
+# Secretos
+.env
+*.env
+!.env.example
+client_secret*.json
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+*.sqlite3
+
+# Node / React
+node_modules/
+dist/
+build/
+
+# Modelos y datos pesados
+*.pt
+*.onnx
+datasets/
+media/
+staticfiles/
+
+# Móvil
+*.apk
+*.keystore
+.expo/
+android/app/build/
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
