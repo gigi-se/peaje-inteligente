@@ -1,0 +1,11 @@
+# Servicio de inferencia (Colab / RunPod). Versiones probadas; torch/CUDA vienen preinstalados en Colab y RunPod.
+fastapi==0.165.0
+uvicorn[standard]==0.54.0
+python-multipart==0.0.32
+onnxruntime==1.29.0
+fast-plate-ocr==1.1.0
+opencv-python-headless
+numpy
+ultralytics
+# Opcional (OCR alternativo, OCR_ENGINE=easyocr):
+# easyocr
