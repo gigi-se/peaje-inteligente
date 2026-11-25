@@ -32,5 +32,5 @@ notebook `inferencia/colab_servidor.ipynb`
 - Datasets Roboflow: 
 vehículos: https://universe.roboflow.com/gisselle-andrea-severich-aramayo-s-workspace/peaje-vehiculos-eustj
 llantas: https://universe.roboflow.com/gisselle-andrea-severich-aramayo-s-workspace/peaje-llantas
- Endpoint de inferencia: Google Colab (`inferencia/colab_servidor.ipynb`), publicado con un túnel de Cloudflare. La URL cambia en cada reinicio de la sesión, por eso se configura desde el panel.
+ Endpoint de inferencia: Google Colab (`inferencia/colab_servidor(2).ipynb`), publicado con un túnel de Cloudflare. La URL cambia en cada reinicio de la sesión, por eso se configura desde el panel.
 
