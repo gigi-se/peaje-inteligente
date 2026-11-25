@@ -1,0 +1,1532 @@
+openapi: 3.0.3
+info:
+  title: API Sistema Inteligente de Control de Peaje
+  version: 1.0.0
+  description: Autenticación con Google; todas las rutas (excepto /auth/google) requieren
+    Bearer token.
+paths:
+  /api/v1/agente/chat:
+    post:
+      operationId: v1_agente_chat_create
+      summary: Mensaje al agente conversacional
+      tags:
+      - v1
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/ajustes/inferencia:
+    get:
+      operationId: v1_ajustes_inferencia_retrieve
+      description: URL y API key del endpoint de inferencia, editables por el administrador
+        sin tocar el servidor.
+      summary: Ajustes del endpoint de inferencia
+      tags:
+      - v1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    put:
+      operationId: v1_ajustes_inferencia_update
+      description: URL y API key del endpoint de inferencia, editables por el administrador
+        sin tocar el servidor.
+      summary: Cambiar URL y/o API key del endpoint de inferencia
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: {}
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              additionalProperties: {}
+          multipart/form-data:
+            schema:
+              type: object
+              additionalProperties: {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/ajustes/llm:
+    get:
+      operationId: v1_ajustes_llm_retrieve
+      description: Modelo de lenguaje del agente (API compatible con OpenAI), editable
+        desde el panel.
+      summary: Ajustes del LLM del agente
+      tags:
+      - v1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    put:
+      operationId: v1_ajustes_llm_update
+      description: Modelo de lenguaje del agente (API compatible con OpenAI), editable
+        desde el panel.
+      summary: Cambiar URL base, modelo y/o API key del LLM
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: {}
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              additionalProperties: {}
+          multipart/form-data:
+            schema:
+              type: object
+              additionalProperties: {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/alertas/:
+    get:
+      operationId: v1_alertas_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: Un número de página dentro del conjunto de resultados paginado.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Número de resultados a devolver por página.
+        schema:
+          type: integer
+      tags:
+      - v1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAlertaList'
+          description: ''
+  /api/v1/alertas/{id}/:
+    get:
+      operationId: v1_alertas_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este alerta.
+        required: true
+      tags:
+      - v1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Alerta'
+          description: ''
+  /api/v1/alertas/{id}/atender/:
+    post:
+      operationId: v1_alertas_atender_create
+      summary: Marcar alerta como atendida
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este alerta.
+        required: true
+      tags:
+      - v1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Alerta'
+          description: ''
+  /api/v1/auth/google:
+    post:
+      operationId: v1_auth_google_create
+      summary: Login con Google
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleLoginRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GoogleLoginRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GoogleLoginRequest'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+        '403':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/auth/yo:
+    get:
+      operationId: v1_auth_yo_retrieve
+      summary: Usuario autenticado
+      tags:
+      - v1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+  /api/v1/casetas/:
+    get:
+      operationId: v1_casetas_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: Un número de página dentro del conjunto de resultados paginado.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Número de resultados a devolver por página.
+        schema:
+          type: integer
+      tags:
+      - v1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCasetaList'
+          description: ''
+    post:
+      operationId: v1_casetas_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CasetaRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CasetaRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CasetaRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Caseta'
+          description: ''
+  /api/v1/casetas/{id}/:
+    get:
+      operationId: v1_casetas_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este caseta.
+        required: true
+      tags:
+      - v1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Caseta'
+          description: ''
+    put:
+      operationId: v1_casetas_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este caseta.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CasetaRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CasetaRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CasetaRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Caseta'
+          description: ''
+    patch:
+      operationId: v1_casetas_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este caseta.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCasetaRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCasetaRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCasetaRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Caseta'
+          description: ''
+    delete:
+      operationId: v1_casetas_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este caseta.
+        required: true
+      tags:
+      - v1
+      responses:
+        '204':
+          description: No response body
+  /api/v1/casetas/{id}/resumen/:
+    get:
+      operationId: v1_casetas_resumen_retrieve
+      summary: Conteo y recaudación del día
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este caseta.
+        required: true
+      tags:
+      - v1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/config:
+    get:
+      operationId: v1_config_retrieve
+      description: Datos públicos que necesita el front antes de iniciar sesión (el
+        client id de Google no es secreto).
+      summary: Configuración pública del front
+      tags:
+      - v1
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/estado:
+    get:
+      operationId: v1_estado_retrieve
+      summary: Indica si el endpoint de inferencia responde
+      tags:
+      - v1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/pasos/:
+    get:
+      operationId: v1_pasos_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: Un número de página dentro del conjunto de resultados paginado.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Número de resultados a devolver por página.
+        schema:
+          type: integer
+      tags:
+      - v1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPasoList'
+          description: ''
+  /api/v1/pasos/{id}/:
+    get:
+      operationId: v1_pasos_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este paso.
+        required: true
+      tags:
+      - v1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Paso'
+          description: ''
+  /api/v1/pasos/frame:
+    post:
+      operationId: v1_pasos_frame_create
+      summary: Recibe un frame, infiere, registra el paso y lo emite en tiempo real
+      tags:
+      - v1
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FrameRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/placas/{placa}/historial:
+    get:
+      operationId: v1_placas_historial_list
+      summary: Historial de pasos de una placa
+      parameters:
+      - in: path
+        name: placa
+        schema:
+          type: string
+        required: true
+      tags:
+      - v1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Paso'
+          description: ''
+  /api/v1/placas/consultar:
+    post:
+      operationId: v1_placas_consultar_create
+      summary: Consulta una placa por texto
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsultarRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConsultarRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConsultarRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/placas/consultar-imagen:
+    post:
+      operationId: v1_placas_consultar_imagen_create
+      summary: Consulta una placa por imagen (M1 + OCR)
+      tags:
+      - v1
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConsultarImagenRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/resumen:
+    get:
+      operationId: v1_resumen_retrieve
+      summary: Contadores del panel (todas las casetas, hoy)
+      tags:
+      - v1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/v1/tarifas/:
+    get:
+      operationId: v1_tarifas_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: Un número de página dentro del conjunto de resultados paginado.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Número de resultados a devolver por página.
+        schema:
+          type: integer
+      tags:
+      - v1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTarifaList'
+          description: ''
+    post:
+      operationId: v1_tarifas_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TarifaRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TarifaRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TarifaRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tarifa'
+          description: ''
+  /api/v1/tarifas/{id}/:
+    get:
+      operationId: v1_tarifas_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este tarifa.
+        required: true
+      tags:
+      - v1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tarifa'
+          description: ''
+    put:
+      operationId: v1_tarifas_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este tarifa.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TarifaRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TarifaRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TarifaRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tarifa'
+          description: ''
+    patch:
+      operationId: v1_tarifas_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este tarifa.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTarifaRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTarifaRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTarifaRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tarifa'
+          description: ''
+    delete:
+      operationId: v1_tarifas_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este tarifa.
+        required: true
+      tags:
+      - v1
+      responses:
+        '204':
+          description: No response body
+  /api/v1/usuarios/:
+    get:
+      operationId: v1_usuarios_list
+      description: Gestión de la lista blanca (solo administradores).
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: Un número de página dentro del conjunto de resultados paginado.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Número de resultados a devolver por página.
+        schema:
+          type: integer
+      tags:
+      - v1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUsuarioList'
+          description: ''
+    post:
+      operationId: v1_usuarios_create
+      description: Gestión de la lista blanca (solo administradores).
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsuarioRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UsuarioRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UsuarioRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+  /api/v1/usuarios/{id}/:
+    get:
+      operationId: v1_usuarios_retrieve
+      description: Gestión de la lista blanca (solo administradores).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este usuario.
+        required: true
+      tags:
+      - v1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+    put:
+      operationId: v1_usuarios_update
+      description: Gestión de la lista blanca (solo administradores).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este usuario.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsuarioRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UsuarioRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UsuarioRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+    patch:
+      operationId: v1_usuarios_partial_update
+      description: Gestión de la lista blanca (solo administradores).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este usuario.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUsuarioRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUsuarioRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUsuarioRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+    delete:
+      operationId: v1_usuarios_destroy
+      description: Gestión de la lista blanca (solo administradores).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este usuario.
+        required: true
+      tags:
+      - v1
+      responses:
+        '204':
+          description: No response body
+  /api/v1/vehiculos/:
+    get:
+      operationId: v1_vehiculos_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: Un número de página dentro del conjunto de resultados paginado.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Número de resultados a devolver por página.
+        schema:
+          type: integer
+      tags:
+      - v1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedVehiculoList'
+          description: ''
+    post:
+      operationId: v1_vehiculos_create
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VehiculoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VehiculoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VehiculoRequest'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehiculo'
+          description: ''
+  /api/v1/vehiculos/{id}/:
+    get:
+      operationId: v1_vehiculos_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este vehiculo.
+        required: true
+      tags:
+      - v1
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehiculo'
+          description: ''
+    put:
+      operationId: v1_vehiculos_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este vehiculo.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VehiculoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VehiculoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VehiculoRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehiculo'
+          description: ''
+    patch:
+      operationId: v1_vehiculos_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este vehiculo.
+        required: true
+      tags:
+      - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedVehiculoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedVehiculoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedVehiculoRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehiculo'
+          description: ''
+    delete:
+      operationId: v1_vehiculos_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: Un valor de entero único que identifique este vehiculo.
+        required: true
+      tags:
+      - v1
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    Alerta:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        tipo:
+          $ref: '#/components/schemas/TipoEnum'
+        atendida:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        paso:
+          allOf:
+          - $ref: '#/components/schemas/Paso'
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - paso
+      - tipo
+    Caseta:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nombre:
+          type: string
+          maxLength: 100
+        ubicacion:
+          type: string
+          maxLength: 200
+      required:
+      - id
+      - nombre
+    CasetaRequest:
+      type: object
+      properties:
+        nombre:
+          type: string
+          minLength: 1
+          maxLength: 100
+        ubicacion:
+          type: string
+          maxLength: 200
+      required:
+      - nombre
+    CategoriaEnum:
+      enum:
+      - moto
+      - auto
+      - minibus
+      - microbus
+      - camion
+      - bus
+      type: string
+      description: |-
+        * `moto` - Moto
+        * `auto` - Auto
+        * `minibus` - Minibús
+        * `microbus` - Micro
+        * `camion` - Camión
+        * `bus` - Bus
+    ChatRequest:
+      type: object
+      properties:
+        mensaje:
+          type: string
+        imagen:
+          type: string
+          format: binary
+    ConsultarImagenRequest:
+      type: object
+      properties:
+        imagen:
+          type: string
+          format: binary
+      required:
+      - imagen
+    ConsultarRequest:
+      type: object
+      properties:
+        placa:
+          type: string
+          minLength: 1
+          maxLength: 20
+      required:
+      - placa
+    EstadoEnum:
+      enum:
+      - ok
+      - no_registrada
+      - sin_saldo
+      type: string
+      description: |-
+        * `ok` - Cobrado
+        * `no_registrada` - Placa no registrada
+        * `sin_saldo` - Sin saldo
+    FrameRequest:
+      type: object
+      properties:
+        imagen:
+          type: string
+          format: binary
+        caseta_id:
+          type: integer
+      required:
+      - caseta_id
+      - imagen
+    GoogleLoginRequest:
+      type: object
+      properties:
+        id_token:
+          type: string
+          minLength: 1
+      required:
+      - id_token
+    PaginatedAlertaList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Alerta'
+    PaginatedCasetaList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Caseta'
+    PaginatedPasoList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Paso'
+    PaginatedTarifaList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tarifa'
+    PaginatedUsuarioList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Usuario'
+    PaginatedVehiculoList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Vehiculo'
+    Paso:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        placa_leida:
+          type: string
+          maxLength: 20
+        placa_normalizada:
+          type: string
+          maxLength: 10
+        confianza_ocr:
+          type: number
+          format: double
+        categoria_detectada:
+          type: string
+          maxLength: 10
+        ejes_detectados:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        monto:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,6}(?:\.\d{0,2})?$
+        caseta:
+          type: integer
+        caseta_nombre:
+          type: string
+          readOnly: true
+        usuario:
+          type: integer
+          nullable: true
+        imagen_url:
+          type: string
+          maxLength: 300
+        estado:
+          $ref: '#/components/schemas/EstadoEnum'
+        latencia_ms:
+          type: number
+          format: double
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - caseta
+      - caseta_nombre
+      - created_at
+      - estado
+      - id
+      - placa_leida
+      - placa_normalizada
+    PatchedCasetaRequest:
+      type: object
+      properties:
+        nombre:
+          type: string
+          minLength: 1
+          maxLength: 100
+        ubicacion:
+          type: string
+          maxLength: 200
+    PatchedTarifaRequest:
+      type: object
+      properties:
+        categoria:
+          $ref: '#/components/schemas/CategoriaEnum'
+        ejes:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+        monto:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,6}(?:\.\d{0,2})?$
+    PatchedUsuarioRequest:
+      type: object
+      properties:
+        email_google:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 254
+        nombre:
+          type: string
+          maxLength: 150
+        rol:
+          $ref: '#/components/schemas/RolEnum'
+        activo:
+          type: boolean
+    PatchedVehiculoRequest:
+      type: object
+      properties:
+        placa:
+          type: string
+          minLength: 1
+          description: 'Normalizada: mayúsculas, sin guiones ni espacios'
+          maxLength: 10
+        propietario:
+          type: string
+          minLength: 1
+          maxLength: 150
+        categoria:
+          $ref: '#/components/schemas/CategoriaEnum'
+        ejes:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        saldo:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        activo:
+          type: boolean
+    RolEnum:
+      enum:
+      - admin
+      - operador
+      type: string
+      description: |-
+        * `admin` - Administrador
+        * `operador` - Operador
+    Tarifa:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        categoria:
+          $ref: '#/components/schemas/CategoriaEnum'
+        ejes:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+        monto:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,6}(?:\.\d{0,2})?$
+      required:
+      - categoria
+      - id
+      - monto
+    TarifaRequest:
+      type: object
+      properties:
+        categoria:
+          $ref: '#/components/schemas/CategoriaEnum'
+        ejes:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+          default: 0
+        monto:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,6}(?:\.\d{0,2})?$
+      required:
+      - categoria
+      - monto
+    TipoEnum:
+      enum:
+      - no_registrada
+      - sin_saldo
+      type: string
+      description: |-
+        * `no_registrada` - Placa no registrada
+        * `sin_saldo` - Sin saldo
+    Usuario:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        email_google:
+          type: string
+          format: email
+          maxLength: 254
+        nombre:
+          type: string
+          maxLength: 150
+        rol:
+          $ref: '#/components/schemas/RolEnum'
+        activo:
+          type: boolean
+      required:
+      - email_google
+      - id
+    UsuarioRequest:
+      type: object
+      properties:
+        email_google:
+          type: string
+          format: email
+          minLength: 1
+          maxLength: 254
+        nombre:
+          type: string
+          maxLength: 150
+        rol:
+          $ref: '#/components/schemas/RolEnum'
+        activo:
+          type: boolean
+      required:
+      - email_google
+    Vehiculo:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        placa:
+          type: string
+          description: 'Normalizada: mayúsculas, sin guiones ni espacios'
+          maxLength: 10
+        propietario:
+          type: string
+          maxLength: 150
+        categoria:
+          $ref: '#/components/schemas/CategoriaEnum'
+        ejes:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        saldo:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        activo:
+          type: boolean
+      required:
+      - categoria
+      - id
+      - placa
+      - propietario
+    VehiculoRequest:
+      type: object
+      properties:
+        placa:
+          type: string
+          minLength: 1
+          description: 'Normalizada: mayúsculas, sin guiones ni espacios'
+          maxLength: 10
+        propietario:
+          type: string
+          minLength: 1
+          maxLength: 150
+        categoria:
+          $ref: '#/components/schemas/CategoriaEnum'
+        ejes:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        saldo:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        activo:
+          type: boolean
+      required:
+      - categoria
+      - placa
+      - propietario
