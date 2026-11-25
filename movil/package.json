@@ -1,0 +1,23 @@
+{
+  "name": "peaje-movil",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start",
+    "bundle": "expo export --platform android"
+  },
+  "dependencies": {
+    "@react-native-google-signin/google-signin": "17.0.0",
+    "expo": "~58.0.26",
+    "expo-build-properties": "~58.0.12",
+    "expo-camera": "~58.0.14",
+    "expo-file-system": "^58.0.14",
+    "expo-image-picker": "~58.0.10",
+    "expo-keep-awake": "~58.0.4",
+    "expo-secure-store": "~58.0.3",
+    "expo-status-bar": "~58.0.5",
+    "react": "19.3.0",
+    "react-native": "0.88.1"
+  }
+}

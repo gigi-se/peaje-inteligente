@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "Peaje Inteligente",
+    "slug": "peaje-inteligente",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "android": {
+      "package": "bo.severich.peaje",
+      "permissions": ["CAMERA"]
+    },
+    "plugins": [
+      ["expo-camera", { "cameraPermission": "La cámara se usa para leer placas en la caseta." }],
+      ["expo-image-picker", { "photosPermission": "Elige una foto de una placa para consultarla.", "cameraPermission": "Toma una foto de una placa para consultarla." }],
+      "expo-secure-store",
+      "@react-native-google-signin/google-signin"
+    ]
+  }
+}

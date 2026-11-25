@@ -1,0 +1,13 @@
+{
+  "cli": { "version": ">= 12.0.0" },
+  "build": {
+    "preview": {
+      "distribution": "internal",
+      "android": { "buildType": "apk" },
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://laboratorio3-severich.computech-bo.com",
+        "EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID": "PEGAR_AQUI_EL_CLIENT_ID_WEB.apps.googleusercontent.com"
+      }
+    }
+  }
+}
